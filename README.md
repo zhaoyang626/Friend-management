@@ -22,3 +22,9 @@ Retrieve all email addresses that can receive updates from an email address. If 
 ### Release limitation
 
  - Didn't write unit tests.
+ - Didn't configure docker.
+
+### How to run
+
+ - npm install
+ - node app
