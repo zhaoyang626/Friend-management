@@ -13,27 +13,18 @@ mongoose.connect('mongodb://localhost/user');
 var db = mongoose.connection;
 
 app.post('/friend', (req, res) => {
-    var requestor = req.body.friends[0];
-    var target = req.body.friends[1];
+    var result = validateReqTar(req.body.friends[0], req.body.friends[1]);
 
-    var requestorResult = validateEmail(requestor);
-    var targetResult= validateEmail(target);
-
-    if(requestorResult.success === true) {
-        if(targetResult.success === true) {
-            User.connectFriend(req.body.friends, (err, response) => {
-                if(err) {
-                    throw err;
-                }
-            });
-            res.json({success: true});
-        } else {
-            res.json(targetResult);
-        }
+    if (result.success === true) {
+        User.connectFriend(req.body.friends, (err, response) => {
+            if(err) {
+                throw err;
+            }
+        });
+        res.json({success: true});
     } else {
-        res.json(requestorResult);
+        res.json(result.reason);
     }
-
 });
 
 app.post('/friend/list', (req, res) => {
@@ -56,41 +47,62 @@ app.post('/friend/list', (req, res) => {
 });
 
 app.post('/friend/common', (req, res) => {
-    User.getCommonFriends(req.body.friends, (err, friends) => {
-        if(err) {
-            throw err;
-        }
+    var result = validateReqTar(req.body.friends[0], req.body.friends[1]);
 
-        var friendsList = (friends.length > 0 ) ? friends[0].result : "";
-        res.json({ success: true, friends: friendsList, count: friends.length });
-    });
+    if (result.success === true) {
+        User.getCommonFriends(req.body.friends, (err, friends) => {
+            if(err) {
+                throw err;
+            }
+            
+            var friendsList = (friends.length > 0 ) ? friends[0].result : "";
+            res.json({ success: true, friends: friendsList, count: friends.length });
+        });
+    } else {
+        res.json(result.reason);
+    }
 });
 
 app.post('/subscribe', (req, res) => {
-    User.subscribe(req, (err, friends) => {
-        if(err) {
-            throw err;
-        }
-    });
-    res.json({ success: true });
+    var result = validateReqTar(req.body.requestor, req.body.target);
+    if (result.success === true) {
+        User.subscribe(req.body.requestor, req.body.target, (err, friends) => {
+            if(err) {
+                throw err;
+            }
+        });
+        res.json({ success: true });
+    } else {
+        res.json(result.reason);
+    }
 });
 
 app.post('/block', (req, res) => {
-    User.block(req, (err, friends) => {
-        if(err) {
-            throw err;
-        }
-    });
-    res.json({ success: true });
+    var validateResult = validateReqTar(req.body.requestor, req.body.target);
+    if (validateResult.success === true) {
+        User.block(req.body.requestor, req.body.target, (err, friends) => {
+            if(err) {
+                throw err;
+            }
+        });
+        res.json({ success: true });
+    } else {
+        res.json(validateResult.reason);
+    }
 });
 
 app.post('/recipient', (req, res) => {
-    User.getRecipientList(req, (err, recipientList) => {
-        if(err) {
-            throw err;
-        }
-        res.json(recipientList);
-    });
+    var result = validateEmail(req.body.sender);
+    if (result.success === true) {
+        User.getRecipientList(req.body.sender, req.body.text, (err, recipientList) => {
+            if(err) {
+                throw err;
+            }
+            res.json({ success: true, recipients: recipientList.follower});
+        });
+    } else {
+        res.json(result.reason);
+    }
 });
 
 app.listen(3000);

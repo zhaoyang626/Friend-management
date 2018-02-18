@@ -51,31 +51,32 @@ module.exports.getCommonFriends = (emails, callback) => {
 }
 
 //subscribe
-module.exports.subscribe = (req, callback) => {
-	var query = {email: req.body.requestor};
-	var update = {$push : {subscribe : req.body.target}};
-	User.findOneAndUpdate(query, update, callback);
+module.exports.subscribe = (requestor, target, callback) => {
+	var query = {email: requestor};
+	var update = {$push : {subscribe : target}};
+	User.findOneAndUpdate(query, update, {new: true}, callback);
 } 
 
 // block
-module.exports.block = (req, callback) => {
-	var query = {email: req.body.requestor};
-	var update = {$push : {block : req.body.target}};
-	User.findOneAndUpdate(query, update, callback);
+module.exports.block = (requestor, target, callback) => {
+	var query = {email: requestor};
+	var update = {$push : {block : target}};
+	User.findOneAndUpdate(query, update, {new: true}, callback);
 } 
 
 //get recipient list
-module.exports.getRecipientList = (req, callback) => {
+module.exports.getRecipientList = (sender, text, callback) => {
 	var recipientList = [];
-	var query = {email: req.body.sender};
-	var emails = checkIfEmailInString(req.body.text);
+	var query = {email: sender};
+	var emails = checkIfEmailInString(text);
+	console.log(emails)
 	if(typeof(emails) != 'undefined' && emails != null) {
 		emails.forEach(function(email) {
 			recipientList.push(email);
 		});
 	}
 	var update = {$addToSet : {follower: recipientList}};
-	User.findOneAndUpdate(query, update, callback);
+	User.findOneAndUpdate(query, update, {new: true}, callback);
 } 
 
 var checkIfEmailInString = function (text) { 
