@@ -16,12 +16,21 @@ app.post('/friend', (req, res) => {
     var result = validateReqTar(req.body.friends[0], req.body.friends[1]);
 
     if (result.success === true) {
-        User.connectFriend(req.body.friends, (err, response) => {
-            if(err) {
-                throw err;
+        User.getBlockList(req.body.friends[0], (err, data) => {
+            var blockList = (data.length > 0 ) ? data[0].block : [];
+            if (!blockList.includes(req.body.friends[1])) {
+                User.connectFriend(req.body.friends, (err, response) => {
+                    if(err) {
+                        throw err;
+                    }
+                });
+                res.json({success: true});
+            } else {
+                res.json({success: false, reason: "In block list."})
             }
-        });
-        res.json({success: true});
+
+        })
+
     } else {
         res.json(result.reason);
     }
@@ -37,7 +46,7 @@ app.post('/friend/list', (req, res) => {
                 throw err;
             }
     
-            var friendsList = (friends.length > 0 ) ? friends[0].friends : "";
+            var friendsList = (friends.length > 0 ) ? friends[0].friends : [];
             res.json({ success: true, friends: friendsList, count: friends.length });
         });
     } else {
@@ -84,6 +93,11 @@ app.post('/block', (req, res) => {
             if(err) {
                 throw err;
             }
+            User.removeSubscribe(req.body.requestor, req.body.target, (err, subscribers) => {
+                if(err) {
+                    throw err;
+                }
+            });
         });
         res.json({ success: true });
     } else {

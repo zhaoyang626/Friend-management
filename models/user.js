@@ -26,7 +26,7 @@ const User = module.exports = mongoose.model('User', userSchema);
 module.exports.connectFriend = (emails, callback) => {
 	for(var i = emails.length-1; i >= 0; i--) {
 		var query = {email: {$in: emails[i]}};
-		var update = {$push : {friends : emails[1-i]}};
+		var update = {$addToSet : {friends : emails[1-i]}};
 		User.findOneAndUpdate(query, update, {multi : true}, callback);
 	}
 }
@@ -35,6 +35,12 @@ module.exports.connectFriend = (emails, callback) => {
 module.exports.getFriends = (email, callback) => {
 	var query = {email: email};
     User.find(query, {friends: 1, _id: 0}, callback)
+}
+
+//get block list 
+module.exports.getBlockList = (email, callback) => {
+	var query = {email: email};
+    User.find(query, {block: 1, _id: 0}, callback)
 }
 
 //Get Common Friends list
@@ -53,23 +59,31 @@ module.exports.getCommonFriends = (emails, callback) => {
 //subscribe
 module.exports.subscribe = (requestor, target, callback) => {
 	var query = {email: requestor};
-	var update = {$push : {subscribe : target}};
+	var update = {$addToSet : {subscribe : target}};
 	User.findOneAndUpdate(query, update, {new: true}, callback);
 } 
 
 // block
 module.exports.block = (requestor, target, callback) => {
 	var query = {email: requestor};
-	var update = {$push : {block : target}};
+	var update = {$addToSet : {block : target}};
+
 	User.findOneAndUpdate(query, update, {new: true}, callback);
-} 
+}
+
+module.exports.removeSubscribe = (requestor, target, callback) => {
+	var query = {email: requestor};
+	var update = {$pull : {subscribe : target}};
+
+	User.findOneAndUpdate(query, update, {new: true}, callback);
+}
 
 //get recipient list
 module.exports.getRecipientList = (sender, text, callback) => {
 	var recipientList = [];
 	var query = {email: sender};
 	var emails = checkIfEmailInString(text);
-	console.log(emails)
+
 	if(typeof(emails) != 'undefined' && emails != null) {
 		emails.forEach(function(email) {
 			recipientList.push(email);
