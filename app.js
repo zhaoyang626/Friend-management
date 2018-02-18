@@ -24,6 +24,18 @@ app.post('/friend', (req, res) => {
                         throw err;
                     }
                 });
+                for (var i=0; i<=req.body.friends.length-1; i++) {
+                    User.subscribe(req.body.friends[i], req.body.friends[1-i], (err, response) => {
+                        if(err) {
+                            throw err;
+                        }
+                    });
+                    User.addFollower(req.body.friends[1-i], req.body.friends[i], (err, response) => {
+                        if(err) {
+                            throw err;
+                        }
+                    });
+                }
                 res.json({success: true});
             } else {
                 res.json({success: false, reason: "In block list."})
@@ -124,8 +136,8 @@ app.post('/recipient', (req, res) => {
     }
 });
 
-app.listen(3000);
-console.log('Running on port 3000...');
+app.listen(9000);
+console.log('Running on port 9000...');
 
 var validateEmail = function (email) {
     if (!email)

@@ -27,7 +27,7 @@ module.exports.connectFriend = (emails, callback) => {
 	for(var i = emails.length-1; i >= 0; i--) {
 		var query = {email: {$in: emails[i]}};
 		var update = {$addToSet : {friends : emails[1-i]}};
-		User.findOneAndUpdate(query, update, {multi : true}, callback);
+		User.findOneAndUpdate(query, update, {multi : true, upsert: true, new: true}, callback);
 	}
 }
 
