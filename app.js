@@ -12,10 +12,6 @@ User = require('./models/user');
 mongoose.connect('mongodb://localhost/user');
 var db = mongoose.connection;
 
-app.get('/', (req, res) => {
-	res.send('Please use /api/books or /api/genres');
-});
-
 app.post('/friend', (req, res) => {
     var requestor = req.body.friends[0];
     var target = req.body.friends[1];
