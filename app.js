@@ -79,6 +79,11 @@ app.post('/subscribe', (req, res) => {
             if(err) {
                 throw err;
             }
+            User.addFollower(req.body.target, req.body.requestor, (err, followers) => {
+                if(err) {
+                    throw err;
+                }
+            });
         });
         res.json({ success: true });
     } else {

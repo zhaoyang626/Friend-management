@@ -78,6 +78,20 @@ module.exports.removeSubscribe = (requestor, target, callback) => {
 	User.findOneAndUpdate(query, update, {new: true}, callback);
 }
 
+module.exports.removeRecipients = (requestor, target, callback) => {
+	var query = {email: requestor};
+	var update = {$pull : {follower : target}};
+
+	User.findOneAndUpdate(query, update, {new: true}, callback);
+}
+
+module.exports.addFollower = (requestor, target, callback) => {
+	var query = {email: requestor};
+	var update = {$addToSet : {follower : target}};
+
+	User.findOneAndUpdate(query, update, {new: true}, callback);
+}
+
 //get recipient list
 module.exports.getRecipientList = (sender, text, callback) => {
 	var recipientList = [];
