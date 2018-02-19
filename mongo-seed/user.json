@@ -1,0 +1,141 @@
+[
+    {
+       "email":"jame@example.com",
+       "friends":[
+          "kiki@example.com"
+       ],
+       "follower":[
+          "kiki@example.com"
+       ],
+       "subscribe":[
+          "kiki@example.com"
+       ],
+       "block":[
+ 
+       ]
+    },
+    {
+       "email":"kiki@example.com",
+       "friends":[
+          "jame@example.com"
+       ],
+       "follower":[
+       ],
+       "subscribe":[
+          "jame@example.com"
+       ],
+       "block":[
+ 
+       ]
+    },
+    {
+       "email":"john@example.com",
+       "friends":[
+          "andy@example.com",
+          "common@example.com"
+       ],
+       "follower":[
+          "lisa@example.com",
+          "andy@example.com",
+          "kate@example.com"
+       ],
+       "subscribe":[
+          "common@example.com"
+       ],
+       "block":[
+ 
+       ]
+    },
+    {
+       "email":"kate@example.com",
+       "friends":[
+          "sam@example.com"
+       ],
+       "follower":[
+          "sam@example.com"
+       ],
+       "subscribe":[
+          "sam@example.com"
+       ],
+       "block":[
+ 
+       ]
+    },
+    {
+       "email":"sam@example.com",
+       "friends":[
+          "kate@example.com"
+       ],
+       "follower":[
+          "kate@example.com"
+       ],
+       "subscribe":[
+          "kate@example.com"
+       ],
+       "block":[
+ 
+       ]
+    },
+    {
+       "email":"lily@example.com",
+       "friends":[
+ 
+       ],
+       "follower":[
+ 
+       ],
+       "subscribe":[
+ 
+       ],
+       "block":[
+ 
+       ]
+    },
+    {
+       "email":"andy@example.com",
+       "friends":[
+          "john@example.com",
+          "common@example.com"
+       ],
+       "follower":[
+ 
+       ],
+       "subscribe":[
+          "john@example.com"
+       ],
+       "block":[
+          "john@example.com"
+       ]
+    },
+    {
+       "email":"common@example.com",
+       "friends":[
+          "andy@example.com",
+          "john@example.com"
+       ],
+       "follower":[
+          "john@example.com"
+       ],
+       "subscribe":[
+          "john@example.com"
+       ],
+       "block":[
+ 
+       ]
+    },
+    {
+       "email":"lisa@example.com",
+       "friends":[
+ 
+       ],
+       "follower":[
+ 
+       ],
+       "subscribe":[
+          "john@example.com"
+       ],
+       "block":[
+ 
+       ]
+    }
+ ]
