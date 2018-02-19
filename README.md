@@ -1,3 +1,4 @@
+
 # friend-management-api
 
 ### Tech
@@ -18,13 +19,13 @@ If requestor subscribed target, target will be removed from subscribe list.
 #### /recipient
 Retrieve all email addresses that can receive updates from an email address. If send mention target's email in the text, then target's email will show in the requestor's follower list. 
 
+### How to run
+ - sudo docker-compose build
+ - sudo docker-compose up
+ 
+### Test API
+- Data is in user.json
+- Support all samples api tests appearing in requirement
 
 ### Release limitation
-
  - Didn't write unit tests.
- - Didn't configure docker.
-
-### How to run
-
- - npm install
- - node app
